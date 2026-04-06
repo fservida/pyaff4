@@ -562,11 +562,11 @@ class MemoryDataStore(object):
                 container_hashes_segment.compression_method = ZIP_DEFLATE
                 container_hashes_segment.write(utils.SmartStr(json.dumps(hashes)))
                 container_hashes_segment.Flush()
-            container_hashes_segment.Close()
+                container_hashes_segment.Close()
 
     def read_metadata_hashes(self, zipcontainer):
-        # containerHashesURN = escaping.urn_from_member_name(u"container.hashes", zipcontainer.urn, zipcontainer.version)
-        if not zipcontainer.ContainsMember("container.hashes"):
+        containerHashesARN = escaping.urn_from_member_name(u"container.hashes", zipcontainer.urn, zipcontainer.version)
+        if zipcontainer.ContainsMember(containerHashesARN):
             with zipcontainer.OpenZipSegment("container.hashes") as fd:
                 data = fd.read()
                 hashes = json.loads(data)
